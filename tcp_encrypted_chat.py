@@ -54,9 +54,17 @@ def startTCPEncryptedChat(host, port, DES_key, clientserver):
                             pad=None, padmode=pydes.PAD_PKCS5)
             received = key.decrypt(received, padmode=pydes.PAD_PKCS5)
 
-            # TODO: Remove HMAC and message, regenerate HMAC, verify HMAC, print message always
+            plaintext = received.decode("utf-8").split("|||||")[0]
+            hash_check = received.decode("utf-8").split("|||||")[1]
+            hash_computed = hashlib.sha224(plaintext.encode()).hexdigest()
+            print("Received hash: " + str(hash_check))
+            print("Computed hash: " + str(hash_computed))
+            if hash_check == hash_computed:
+                print("Match!")
+            else:
+                print("No match.")
 
-            print("Plaintext: " + received.decode("utf-8"))
+            print("Plaintext: " + str(plaintext))
 
             message = input("Message to send: ").strip("\r\n")
 
@@ -64,7 +72,9 @@ def startTCPEncryptedChat(host, port, DES_key, clientserver):
             key = pydes.des("DESCRYPT", pydes.CBC, DES_key,
                             pad=None, padmode=pydes.PAD_PKCS5)
 
-            # TODO: message = message + "|||" + HMAC
+            hmac = hashlib.sha224(message.encode()).hexdigest()
+            print("Hash of plaintext is " + str(hmac))
+            message = message + "|||||" + str(hmac)
 
             message = key.encrypt(message)
             print("Ciphertext: " + repr(message))
@@ -84,7 +94,9 @@ def startTCPEncryptedChat(host, port, DES_key, clientserver):
             key = pydes.des("DESCRYPT", pydes.CBC, DES_key,
                             pad=None, padmode=pydes.PAD_PKCS5)
 
-            # TODO: message = message + "|||" + HMAC
+            hmac = hashlib.sha224(message.encode()).hexdigest()
+            print("Hash of plaintext is " + str(hmac))
+            message = message + "|||||" + str(hmac)
 
             message = key.encrypt(message)
             print("Ciphertext: " + repr(message))
@@ -99,9 +111,17 @@ def startTCPEncryptedChat(host, port, DES_key, clientserver):
                             pad=None, padmode=pydes.PAD_PKCS5)
             received = key.decrypt(received, padmode=pydes.PAD_PKCS5)
 
-            # TODO: Remove HMAC and message, regenerate HMAC, verify HMAC, print message always
+            plaintext = received.decode("utf-8").split("|||||")[0]
+            hash_check = received.decode("utf-8").split("|||||")[1]
+            hash_computed = hashlib.sha224(plaintext.encode()).hexdigest()
+            print("Received hash: " + str(hash_check))
+            print("Computed hash: " + str(hash_computed))
+            if hash_check == hash_computed:
+                print("Match!")
+            else:
+                print("No match.")
 
-            print("Plaintext: " + received.decode("utf-8"))
+            print("Plaintext: " + str(plaintext))
 
     return
 
