@@ -8,6 +8,7 @@ import pyDes as pydes
 CONNECTION_BUFFER_SIZE = 1024000000  # 1024 MB
 
 
+# Function that parses the system arguments and returns them as an array
 def parseArguments():
     argumentLength = len(sys.argv)
     if argumentLength < 5:
@@ -28,6 +29,7 @@ def parseArguments():
     return arguments
 
 
+# Function that removes the shared DES Key from the file, and returns it as a string
 def getDESKeyFromFile(filename):
     DES_key = None
     with open(filename, "r") as key_file:
@@ -37,6 +39,7 @@ def getDESKeyFromFile(filename):
     return DES_key
 
 
+# Looping function that handles the TCP connection between both server and client
 def startTCPEncryptedChat(host, port, DES_key, clientserver):
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_address = (host, port)
